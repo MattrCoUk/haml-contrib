@@ -10,7 +10,20 @@ module Haml
       include Base
 
       def render(text)
-        "<?php\n  %s\n?>" % text.rstrip.gsub("\n", "\n  ")
+         ##
+         #  Remove comments and spacing from PHP code (minify PHP)
+         #  - passing the input string (text) through 'php -w' command via shell (here string)
+         #  - add <?php ?> tags as not present in haml code
+         #
+        `php -w <<< "<?php #{text} ?>"`
+        
+        ##
+        #   Original code (without minification)
+        #   
+        #   DODO: find the way to switch between them
+        #
+        #  "<?php\n  %s\n?>" % text.rstrip.gsub("\n", "\n  ")
+        
       end
     end
   end

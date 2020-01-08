@@ -1,5 +1,10 @@
 # Haml Contrib Changelog
 
+
+## 1.0.0.2 (2020-01-08)
+* Minify output PHP code (hardcoded)
+
+
 ## 1.0.0.1 (2013-05-28)
 
 * Officially released MIT License.
