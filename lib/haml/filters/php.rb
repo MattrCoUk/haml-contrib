@@ -14,9 +14,15 @@ module Haml
          #  Remove comments and spacing from PHP code (minify PHP)
          #  - passing the input string (text) through 'php -w' command via shell (here string)
          #  - add <?php ?> tags as not present in haml code
-         #
-        `php -w <<< "<?php #{text} ?>"`
+         #         
+         
+         # escape special chars in PHP code, might need to use shellscape or similar
+         text=text.gsub("\\", "\\\\\\").gsub("\"", "\\\"").gsub("$", "\\$").gsub("`", "\\\\`") 
+         
+         
+         `php -w <<< "<?php #{text} ?>"`
         
+
         ##
         #   Original code (without minification)
         #   
