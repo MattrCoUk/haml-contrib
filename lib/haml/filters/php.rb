@@ -5,32 +5,54 @@
 # This code also serves as an example of how to implement a simple filter for
 # Haml.
 module Haml
-  module Filters
-    module PHP
-      include Base
+   module Filters
+      
+      
+      ##
+      #  - passing the input string (text) through 'php -w' command via shell (here string) for minification
+      #  - wrap the output in <?php ?> tag
+      # 
+      module PHP
+         include Base
+       
+         def render(text)
 
-      def render(text)
-         ##
-         #  Remove comments and spacing from PHP code (minify PHP)
-         #  - passing the input string (text) through 'php -w' command via shell (here string)
-         #  - add <?php ?> tags as not present in haml code
-         #         
-         
-         # escape special chars in PHP code, might need to use shellscape or similar
-         text=text.gsub("\\", "\\\\\\").gsub("\"", "\\\"").gsub("$", "\\$").gsub("`", "\\\\`") 
-         
-         
-         `php -w <<< "<?php #{text} ?>"`
-        
-
-        ##
-        #   Original code (without minification)
-        #   
-        #   DODO: find the way to switch between them
-        #
-        #  "<?php\n  %s\n?>" % text.rstrip.gsub("\n", "\n  ")
-        
+            # escape special chars in PHP code, probably better to use might need to use shellscape or similar
+            text=text.gsub("\\", "\\\\\\").gsub("\"", "\\\"").gsub("$", "\\$").gsub("`", "\\\\`") 
+                        
+            `php -w <<< "<?php #{text} ?>"`
+           
+         end
       end
-    end
-  end
+      
+      
+      ##
+      #  - same as aboove but omits the closing tag ?>
+      #  useful in PHP-only files
+      # 
+      module PHP_noclosetag
+         include Base
+
+         def render(text)
+
+            text=text.gsub("\\", "\\\\\\").gsub("\"", "\\\"").gsub("$", "\\$").gsub("`", "\\\\`") 
+
+            `php -w <<< "<?php #{text}"`
+           
+         end
+      end
+      
+      
+      ##
+      #  no minifications, all PHP code passed as is, wrapped in <?php ?> tag
+      # 
+      module PHP_nominify
+         include Base
+
+         # no minification
+         def render(text)
+            "<?php\n  %s\n?>" % text.rstrip.gsub("\n", "\n  ")
+         end
+      end
+   end
 end
