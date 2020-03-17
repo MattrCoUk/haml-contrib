@@ -9,8 +9,8 @@ module Haml
       
       
       ##
-      #  - passing the input string (text) through 'php -w' command via shell (here string) for minification
-      #  - wrap the output in <?php ?> tag
+      #  passing the input string (text str) through 'php -w' command via shell (here string) for minification
+      #  wrap the output in <?php ?> tag
       # 
       module PHP
          include Base
@@ -30,7 +30,7 @@ module Haml
       #  - same as aboove but omits the closing tag ?>
       #  useful in PHP-only files
       # 
-      module PHP_noclosetag
+      module PHP_nocl
          include Base
 
          def render(text)
@@ -45,8 +45,9 @@ module Haml
       
       ##
       #  no minifications, all PHP code passed as is, wrapped in <?php ?> tag
-      # 
-      module PHP_nominify
+      #  useful in debugging :-)  
+      #
+      module PHP_nomin
          include Base
 
          # no minification
